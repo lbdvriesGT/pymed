@@ -17,6 +17,7 @@ class PubMedArticle(object):
         "title",
         "abstract",
         "keywords",
+        "mesh",
         "journal",
         "publication_date",
         "authors",
@@ -60,6 +61,12 @@ class PubMedArticle(object):
             keyword.text for keyword in xml_element.findall(path) if keyword is not None
         ]
 
+    def _extractMesh(self: object, xml_element: TypeVar("Element")) -> str:
+        path = ".//MeshHeadingList/MeshHeading/*"
+        return [
+            mesh.text for mesh in xml_element.findall(path) if mesh is not None
+        ]
+
     def _extractJournal(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//Journal/Title"
         return getContent(element=xml_element, path=path)
@@ -95,9 +102,12 @@ class PubMedArticle(object):
         try:
 
             # Get the publication elements
-            publication_date = xml_element.find(".//PubMedPubDate[@PubStatus='pubmed']")
-            publication_year = int(getContent(publication_date, ".//Year", None))
-            publication_month = int(getContent(publication_date, ".//Month", "1"))
+            publication_date = xml_element.find(
+                ".//PubMedPubDate[@PubStatus='pubmed']")
+            publication_year = int(getContent(
+                publication_date, ".//Year", None))
+            publication_month = int(getContent(
+                publication_date, ".//Month", "1"))
             publication_day = int(getContent(publication_date, ".//Day", "1"))
 
             # Construct a datetime object from the info
@@ -129,6 +139,7 @@ class PubMedArticle(object):
         self.pubmed_id = self._extractPubMedId(xml_element)
         self.title = self._extractTitle(xml_element)
         self.keywords = self._extractKeywords(xml_element)
+        self.mesh = self._extractMesh(xml_element)
         self.journal = self._extractJournal(xml_element)
         self.abstract = self._extractAbstract(xml_element)
         self.conclusions = self._extractConclusions(xml_element)
@@ -152,7 +163,8 @@ class PubMedArticle(object):
 
         return json.dumps(
             {
-                key: (value if not isinstance(value, (datetime.date, Element)) else str(value))
+                key: (value if not isinstance(
+                    value, (datetime.date, Element)) else str(value))
                 for key, value in self.toDict().items()
             },
             sort_keys=True,
