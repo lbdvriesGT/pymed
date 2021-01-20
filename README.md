@@ -1,6 +1,9 @@
 # My Fork of the [Original PyMed package](https://github.com/gijswobben/pymed)
 This is my fork for the original PyMed package as it was no longer being maintained. I required MeSH terms and it has been modified from the initial module to do this.
 
+#### What is added in this fork?
+- MeSH Terms specified as "mesh"
+
 ## Installation
 This fork can be installed by running the following code in python:
 ``` 
