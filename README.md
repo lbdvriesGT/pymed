@@ -1,5 +1,32 @@
 > IMPORTANT NOTE: I don't have time to maintain this library (as some of you might have noticed). The PubMed API is a little chaotic, without a clear documentation and no single way of doing things, making it almost impossible to create a proper library. Feel free to create a fork or use the code for your own projects, however, I will archive this repository. Thanks to all contributers and users!
 
+# My Fork of the Original PyMed package
+This is my fork for the original PyMed package as it was no longer being maintained. I required MeSH terms and it has been modified from the initial module to do this.
+
+## Installation
+This fork can be installed by running the following code in python:
+``` 
+pip install git+https://github.com/Shandorius/pymed#pymed
+```
+## Usage
+The best usage for using this specific fork can be found in the "examples/recommended_way_of_search" folder as found on this page. It also shows all the available terms you can call for articles.
+
+### Available terms for fetching articles (automatically includes all if you do not specify which ones you need as explained in the example):
+- "pubmed_id" 
+- "title",
+- "abstract",
+- "keywords",
+- "mesh",
+- "journal",
+- "publication_date",
+- "authors",
+- "methods",
+- "conclusions",
+- "results",
+- "copyrights",
+- "doi",
+- "xml",
+
 # PyMed - PubMed Access through Python
 PyMed is a Python library that provides access to PubMed through the PubMed API.
 
