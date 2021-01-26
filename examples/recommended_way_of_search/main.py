@@ -33,6 +33,7 @@ for comp in industryList:
                             'results': article['results'],
                             'copyrights': article['copyrights'],
                             'doi': article['doi'],
+                            'references': article['references'],
                             'publication_date': str(article['publication_date']),
                             'authors': article['authors']})
 
