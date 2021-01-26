@@ -3,6 +3,7 @@ This is my fork for the original PyMed package as it was no longer being maintai
 
 #### What is added in this fork?
 - MeSH Terms specified as "mesh"
+- References used in the article as described in the PubMed Database, specified as "references"
 
 ## Installation
 This fork can be installed by running the following code in python:
@@ -25,6 +26,7 @@ The best usage for using this specific fork can be found in the "examples/recomm
 - "conclusions",
 - "results",
 - "copyrights",
+- "references",
 - "doi",
 - "xml",
 
