@@ -26,6 +26,7 @@ class PubMedArticle(object):
         "results",
         "copyrights",
         "doi",
+        "references",
         "xml",
     )
 
@@ -130,6 +131,12 @@ class PubMedArticle(object):
             }
             for author in xml_element.findall(".//Author")
         ]
+    
+    def _extractReferences(self: object, xml_element: TypeVar("Element")) -> str:
+        path = ".//Reference/ArticleIdList/*"
+        return [
+            reference.text for reference in xml_element.findall(path) if reference is not None
+        ]    
 
     def _initializeFromXML(self: object, xml_element: TypeVar("Element")) -> None:
         """ Helper method that parses an XML element into an article object.
@@ -147,6 +154,7 @@ class PubMedArticle(object):
         self.results = self._extractResults(xml_element)
         self.copyrights = self._extractCopyrights(xml_element)
         self.doi = self._extractDoi(xml_element)
+        self.references = self._extractReferences(xml_element)
         self.publication_date = self._extractPublicationDate(xml_element)
         self.authors = self._extractAuthors(xml_element)
         self.xml = xml_element
