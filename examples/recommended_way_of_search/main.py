@@ -21,8 +21,7 @@ for comp in industryList:
         articleDict = article.toDict()
         articleList.append(articleDict)
     for article in articleList:
-        pubmedId = article['pubmed_id'].partition('\n')[0]
-        articleInfo.append({'pubmed_id': pubmedId,
+        articleInfo.append({'pubmed_id': article['pubmed_id'],
                             'title': article['title'],
                             'keywords': article['keywords'],
                             'mesh': article['mesh'],
