@@ -18,6 +18,8 @@ class PubMedArticle(object):
         "abstract",
         "keywords",
         "mesh",
+        "mesh_id",
+        "mesh_full",
         "journal",
         "publication_date",
         "authors",
@@ -62,11 +64,32 @@ class PubMedArticle(object):
             keyword.text for keyword in xml_element.findall(path) if keyword is not None
         ]
 
+    def _extractFullMesh(self: object, xml_element: TypeVar("Element")) -> str:
+        path = ".//MeshHeadingList/MeshHeading/*"
+        FullMesh = []
+        for mesh in xml_element.findall(path):
+            if mesh is not None:
+                attributes = mesh.items()
+                attributes = dict(attributes)
+                FullMesh.append(
+                    {'mesh_term': mesh.text, 'mesh_id': attributes["UI"]})
+        return FullMesh
+
     def _extractMesh(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//MeshHeadingList/MeshHeading/*"
         return [
             mesh.text for mesh in xml_element.findall(path) if mesh is not None
         ]
+
+    def _extractMesh_id(self: object, xml_element: TypeVar("Element")) -> str:
+        path = ".//MeshHeadingList/MeshHeading/*"
+        MeshID = []
+        for mesh in xml_element.findall(path):
+            if mesh is not None:
+                attributes = mesh.items()
+                attributes = dict(attributes)
+                MeshID.append(attributes["UI"])
+        return MeshID
 
     def _extractJournal(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//Journal/Title"
@@ -131,12 +154,12 @@ class PubMedArticle(object):
             }
             for author in xml_element.findall(".//Author")
         ]
-    
+
     def _extractReferences(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//Reference/ArticleIdList/*"
         return [
             reference.text for reference in xml_element.findall(path) if reference is not None
-        ]    
+        ]
 
     def _initializeFromXML(self: object, xml_element: TypeVar("Element")) -> None:
         """ Helper method that parses an XML element into an article object.
@@ -147,6 +170,8 @@ class PubMedArticle(object):
         self.title = self._extractTitle(xml_element)
         self.keywords = self._extractKeywords(xml_element)
         self.mesh = self._extractMesh(xml_element)
+        self.mesh_id = self._extractMesh_id(xml_element)
+        self.mesh_full = self._extractFullMesh(xml_element)
         self.journal = self._extractJournal(xml_element)
         self.abstract = self._extractAbstract(xml_element)
         self.conclusions = self._extractConclusions(xml_element)
