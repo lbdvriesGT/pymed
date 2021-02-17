@@ -52,7 +52,12 @@ class PubMedArticle(object):
 
     def _extractPubMedId(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//ArticleId[@IdType='pubmed']"
-        return getContent(element=xml_element, path=path)
+        obtId = getContent(element=xml_element, path=path)
+        articleID = obtId.partition('\n')[0]
+        return articleID
+
+        # retired code
+        # return = getContent(element=xml_element, path=path)
 
     def _extractTitle(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//ArticleTitle"
