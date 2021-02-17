@@ -14,11 +14,13 @@ pip install git+https://github.com/Shandorius/pymed#pymed
 The best usage for using this specific fork can be found in the "examples/recommended_way_of_search" folder as found on this page. It also shows all the available terms you can call for articles.
 
 ### Available terms for fetching articles (automatically includes all if you do not specify which ones you need as explained in the example):
-- "pubmed_id" 
+- "pubmed_id"
 - "title",
 - "abstract",
 - "keywords",
-- "mesh",
+- "mesh",                     --> returns MeSH terms
+- "mesh_id",                  --> returns MeSH id
+- "mesh_full",                --> returns object with both MeSH term and id
 - "journal",
 - "publication_date",
 - "authors",
