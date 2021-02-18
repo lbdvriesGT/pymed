@@ -3,6 +3,7 @@ This is my fork for the original PyMed package as it was no longer being maintai
 
 #### What is added in this fork?
 - MeSH Terms specified as "mesh"
+- The ability to obtain the Trees beloging to MeSH terms as can be found in [MeSh Browser](https://meshb.nlm.nih.gov/search)
 - References used in the article as described in the PubMed Database, specified as "references"
 
 ## Installation
@@ -20,7 +21,8 @@ The best usage for using this specific fork can be found in the "examples/recomm
 - "keywords",
 - "mesh",                     --> returns MeSH terms
 - "mesh_id",                  --> returns MeSH id
-- "mesh_full",                --> returns object with both MeSH term and id
+- "mesh_full",                --> returns object with MeSH term, id and tree
+- "mainTree",                 ---> returns a collection of the first 3 alphanumerics (no duplicates) related to the MeSh terms of the article example: ["C02", "M04", "T02"]
 - "journal",
 - "publication_date",
 - "authors",
