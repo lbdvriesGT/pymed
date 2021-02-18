@@ -6,6 +6,8 @@ from typing import TypeVar
 from typing import Optional
 
 from .helpers import getContent
+from .treegen import getTree
+from .treegen import mainDescriptors
 
 
 class PubMedArticle(object):
@@ -20,6 +22,7 @@ class PubMedArticle(object):
         "mesh",
         "mesh_id",
         "mesh_full",
+        "mainTree",
         "journal",
         "publication_date",
         "authors",
@@ -74,10 +77,10 @@ class PubMedArticle(object):
         FullMesh = []
         for mesh in xml_element.findall(path):
             if mesh is not None:
-                attributes = mesh.items()
-                attributes = dict(attributes)
+                attributes = dict(mesh.items())
+                tree = getTree(attributes["UI"])
                 FullMesh.append(
-                    {'mesh_term': mesh.text, 'mesh_id': attributes["UI"]})
+                    {'mesh_term': mesh.text, 'mesh_id': attributes["UI"], 'Tree': tree})
         return FullMesh
 
     def _extractMesh(self: object, xml_element: TypeVar("Element")) -> str:
@@ -95,6 +98,18 @@ class PubMedArticle(object):
                 attributes = dict(attributes)
                 MeshID.append(attributes["UI"])
         return MeshID
+
+    def _mainTree(self: object, xml_element: TypeVar("Element")) -> str:
+        path = ".//MeshHeadingList/MeshHeading/*"
+        tree = []
+        for mesh in xml_element.findall(path):
+            if mesh is not None:
+                attributes = dict(mesh.items())
+                branch = mainDescriptors(attributes["UI"])
+                for element in branch:
+                    if element not in tree:
+                        tree.append(element)
+        return tree
 
     def _extractJournal(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//Journal/Title"
@@ -177,6 +192,7 @@ class PubMedArticle(object):
         self.mesh = self._extractMesh(xml_element)
         self.mesh_id = self._extractMesh_id(xml_element)
         self.mesh_full = self._extractFullMesh(xml_element)
+        self.mainTree = self._mainTree(xml_element)
         self.journal = self._extractJournal(xml_element)
         self.abstract = self._extractAbstract(xml_element)
         self.conclusions = self._extractConclusions(xml_element)
