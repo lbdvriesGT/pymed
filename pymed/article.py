@@ -2,10 +2,11 @@ import json
 import datetime
 
 from xml.etree.ElementTree import Element
+import xml.etree.ElementTree as ET
 from typing import TypeVar
 from typing import Optional
 
-from .helpers import getContent
+from .helpers import getContent, str_replace
 
 
 class PubMedArticle(object):
@@ -101,8 +102,16 @@ class PubMedArticle(object):
         return getContent(element=xml_element, path=path)
 
     def _extractAbstract(self: object, xml_element: TypeVar("Element")) -> str:
-        path = ".//AbstractText"
-        return getContent(element=xml_element, path=path)
+        # path = ".//AbstractText"
+        text = ET.tostring(xml_element, encoding='utf8').decode('utf8')
+        abstract = text[text.find('<AbstractText>')+len('<AbstractText>'):text.find('</AbstractText>')]
+        abstract = str_replace(abstract, 
+                               list_of_strings=['<sub>', '</sub>', '<sup>', '</sup>'],
+                               replace_with='')
+        return abstract
+
+
+        # return getContent(element=xml_element, path=path)
 
     def _extractConclusions(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//AbstractText[@Label='CONCLUSION']"
