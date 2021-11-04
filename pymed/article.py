@@ -1,12 +1,13 @@
 import json
 import datetime
+import re
 
 from xml.etree.ElementTree import Element
 import xml.etree.ElementTree as ET
 from typing import TypeVar
 from typing import Optional
 
-from .helpers import getContent, str_replace
+from .helpers import getContent, str_replace, find_all_occurrencies
 
 
 class PubMedArticle(object):
@@ -104,14 +105,25 @@ class PubMedArticle(object):
     def _extractAbstract(self: object, xml_element: TypeVar("Element")) -> str:
         # path = ".//AbstractText"
         text = ET.tostring(xml_element, encoding='utf8').decode('utf8')
-        abstract = text[text.find('<AbstractText>')+len('<AbstractText>'):text.find('</AbstractText>')]
+        # If Abstract is devided in 
+        if text.find('<AbstractText>') == -1:
+            starts = find_all_occurrencies('<AbstractText Label', text)
+            abstract = ""
+            for s in starts:
+                begin = text[s:].find('>')+s+len('>')
+                end = text[s:].find('</')+s
+                abstract = ' '.join([abstract, text[begin:end]])
+            abstract = abstract[1:]
+        
+        else:
+            abstract = text[text.find('<AbstractText>')+len('<AbstractText>'):text.find('</AbstractText>')]
         abstract = str_replace(abstract, 
-                               list_of_strings=['<sub>', '</sub>', '<sup>', '</sup>'],
+                               list_of_strings=['<sub>', '</sub>', 
+                                                '<sup>', '</sup>', 
+                                                '<b>', '</b>',
+                                                '<i>', '</i>'],
                                replace_with='')
         return abstract
-
-
-        # return getContent(element=xml_element, path=path)
 
     def _extractConclusions(self: object, xml_element: TypeVar("Element")) -> str:
         path = ".//AbstractText[@Label='CONCLUSION']"

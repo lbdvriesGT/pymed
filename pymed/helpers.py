@@ -1,4 +1,5 @@
 from typing import TypeVar
+import re
 
 
 def batches(iterable: list, n: int = 1) -> list:
@@ -54,3 +55,6 @@ def str_replace(text, list_of_strings, replace_with=''):
     for i in list_of_strings:
         text = text.replace(i, replace_with)
     return text
+
+def find_all_occurrencies(substring, string):
+    return [m.start() for m in re.finditer(substring, string)]
