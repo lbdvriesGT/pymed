@@ -148,7 +148,7 @@ class PubMed(object):
 
         # Return the response
         if output == "json":
-            return json.loads("""response""", strict=False)
+            return json.loads(f"{response}", strict=False)
         else:
             return response.text
 
