@@ -145,7 +145,7 @@ class PubMed(object):
 
         # Add this request to the list of requests made
         self._requestsMade.append(datetime.datetime.now())
-
+        print(output == "json")
         # Return the response
         if output == "json":
             return json.loads(response, strict=False)
