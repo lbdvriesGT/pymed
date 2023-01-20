@@ -145,10 +145,10 @@ class PubMed(object):
 
         # Add this request to the list of requests made
         self._requestsMade.append(datetime.datetime.now())
-        print(output == "json")
+        
         # Return the response
         if output == "json":
-            return json.loads(response, strict=False)
+            return response.json()
         else:
             return response.text
 
@@ -168,7 +168,7 @@ class PubMed(object):
 
         # Make the request
         response = self._get(
-            url="/entrez/eutils/efetch.fcgi", parameters=parameters, output="xml"
+            url="/entrez/eutils/efetch.fcgi", parameters=parameters, output="json"
         )
 
         # Parse as XML
