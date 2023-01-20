@@ -16,7 +16,7 @@ setup(
     description=("Python library for access to PubMed"),
     license="MIT",
     keywords="PubMed PMC",
-    url="https://github.com/lbdvriesGT/pymed.git",
+    url="https://github.com/lbdvriesGT/pymed",
     packages=find_packages(),
     install_requires=["requests>=2.20.0"],
     tests_require=["pytest"],
