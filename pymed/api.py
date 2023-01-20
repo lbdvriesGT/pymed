@@ -148,8 +148,8 @@ class PubMed(object):
 
         # Return the response
         if output == "json":
-            print(response)
-            return json.loads(str(response), strict=False)
+            response = response.encode('unicode_escape')
+            return json.loads(response, strict=False)
         else:
             return response.text
 
