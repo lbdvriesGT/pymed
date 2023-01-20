@@ -138,7 +138,7 @@ class PubMed(object):
         parameters["retmode"] = output
 
         # Make the request to PubMed
-        response = requests.get(f"{BASE_URL}{url}", params=parameters).encode('unicode_escape')
+        response = requests.get(f"{BASE_URL}{url}", params=parameters)
 
         # Check for any errors
         response.raise_for_status()
@@ -148,7 +148,7 @@ class PubMed(object):
         
         # Return the response
         if output == "json":
-            return response.json()
+            return json.loads(response.encode('unicode_escape'), strict=False)
         else:
             return response.text
 
